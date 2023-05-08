@@ -1,0 +1,5 @@
+node_modules
+src/app_template
+src/components/atoms/button
+src/components/organisms/card
+src/components/molecules/copy-button

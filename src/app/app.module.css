@@ -1,5 +1,5 @@
 .main {
-  @apply px-12 py-6 min-h-screen space-y-16 w-full bg-white;
+  @apply px-12 py-6 min-h-screen w-full bg-white;
   /* @apply px-16 min-h-screen sm:px-0 py-16 space-y-16 w-full bg-gray-100; */
   background-image: radial-gradient(hsla(0, 0%, 84.3%, 0.25) 1px, transparent 0),
     radial-gradient(hsla(0, 0%, 84.3%, 0.1) 1px, transparent 0);

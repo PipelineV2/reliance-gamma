@@ -6,8 +6,10 @@ import Nav from "components/organisms/nav";
 import Header from "components/organisms/header";
 import { ProductsProp, ProvidersProp } from "src/utils/types";
 import { responseSuccessStatus } from "../constants";
-import { StateWidget } from "@todak2000/nigeria-state-lga-react-component";
+import { useStatesApi } from "@todak2000/nigeria-state-lga-react-component";
 import { filterByStateAndProduct } from "../utils";
+import Search from "components/organisms/search";
+import { MdOutlineManageSearch } from 'react-icons/md'
 
 const App = (): JSX.Element => {
   const [selected, setSelected] = useState<string[]>([]);
@@ -15,7 +17,8 @@ const App = (): JSX.Element => {
   const [providers, setProviders] = useState<ProvidersProp[]>([]);
   const [error, setError] = useState<string>("");
   const [searchState, setSearchState] = useState<string[]>([]);
-
+  const [result, setResult] = useState<object[]>([]);
+  const states = useStatesApi();
   useEffect(() => {
     fetchProvidersData().then((res) => {
       if (res.status === responseSuccessStatus) {
@@ -40,8 +43,9 @@ const App = (): JSX.Element => {
       selected,
       searchState
     );
+    setResult(x)
     console.log(x, "result");
-  }, [selected, searchState]);
+  }, [selected,  searchState]);
 
   const onChange = (item: string) => {
     setSelected((prevSelected) => {
@@ -57,29 +61,64 @@ const App = (): JSX.Element => {
       }
     });
   };
+
+  const onChangeStates = (item: string) => {
+    setSearchState((prevSelected) => {
+      // if it's in, remove
+      const newArray = [...prevSelected];
+      if (newArray.includes(item)) {
+        // return newArray
+        return newArray.filter((filteredItem) => filteredItem != item);
+        // else, add
+      } else {
+        newArray.push(item);
+        return newArray;
+      }
+    });
+  };
   return (
+    <>
     <main className={styles.main}>
       <Nav />
+
       <Header />
-      <div className="grid grid-cols-12">
+      <div className="grid md:grid-cols-3  grid-cols-1 gap-3 md:px-20 ">
+        <Search />
         <MultiSelectDropdown
-          selectClassName="col-span-8"
+          selectClassName="w-full"
           options={products}
           selected={selected}
           onChange={onChange}
+          type="plan"
         />
-        <StateWidget
-          isMultipleSelect
-          setState={setSearchState}
-          className="col-span-4"
+        <MultiSelectDropdown
+          selectClassName="w-full"
+          options={states}
+          selected={searchState}
+          onChange={onChangeStates}
+          type="state"
         />
       </div>
-      <footer className="text-sm text-gray-600 text-center">
-        <a href="https://github.com/PipelineV2/reliance-gamma">
-          TalentQL Pipeline Team Gamma @ {new Date().getFullYear()}
-        </a>
-      </footer>
+      
+      {result.length > 0 && error ==='' ? 
+      <p>hi</p> //todo remove this p tag and pass your result component here 
+    :
+    <>
+    <div className="flex flex-col items-center justify-center md:px-20">
+      <MdOutlineManageSearch className="text-4xl text-red-400 my-4"/>
+      <p className="text-sm text-red-400">{error ? error: "Sorry! there is no result for your search"}</p>
+      </div>
+    </>
+    }
+      
+      
     </main>
+    <footer className="text-sm text-gray-600 text-center flex flex-row justify-center w-full absolute bottom-4">
+    <a href="https://github.com/PipelineV2/reliance-gamma">
+      TalentQL Pipeline Team Gamma @ {new Date().getFullYear()}
+    </a>
+  </footer>
+    </>
   );
 };
 

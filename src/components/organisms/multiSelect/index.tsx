@@ -8,6 +8,7 @@ import { toTitleCase } from "../../../utils/";
 type multiProps = {
   options: any;
   selected: any;
+  type: string;
   onChange: (state: any) => void;
   selectClassName?: string;
   selectStyle?: object;
@@ -28,12 +29,16 @@ type multiProps = {
 
 type optionsProps = {
   id: string;
-  name: string;
+  name?: string;
+  state?: string;
+  slogan?: string;
+  lga?: string[]
 };
 
 function MultiSelectDropdown({
   options,
   selected,
+  type,
   onChange,
   selectClassName = "defaultSelectClass",
   selectStyle,
@@ -55,9 +60,13 @@ function MultiSelectDropdown({
   const [dropdownOptions, setDropdownOptions] = useState<optionsProps[]>([]);
   useEffect(() => {
     if (searchQuery !== "" && typeof options[0] === "object") {
+      
       setDropdownOptions(
-        options?.filter(({ id, name }: optionsProps) =>
-          name?.toLocaleLowerCase()?.includes(searchQuery?.toLocaleLowerCase())
+        
+        options?.filter(({ id, name, state }: optionsProps) =>
+        name?.toLocaleLowerCase()?.includes(searchQuery?.toLocaleLowerCase()) ||
+        state?.toLocaleLowerCase()?.includes(searchQuery?.toLocaleLowerCase())
+          
         )
       );
     } else if (searchQuery !== "" && typeof options[0] === "string") {
@@ -75,31 +84,26 @@ function MultiSelectDropdown({
     setDropdownOptions(options);
   }, [options, showDropdown]);
 
+  useEffect(() => {
+    console.log(selected)
+  }, [selected])
+  
+// console.log(dropdownOptions)
   return (
     <div className={`${selectClassName} flex items-start space-x-6`}>
-      {/* Hospital Name Input */}
-      <div>
-        <input
-          className="rounded-md flex items-center justify-between border-2 border-gray-400 p-3 placeholder:text-gray-500 md:basis-1/2"
-          type="text"
-          placeholder="Enter Hospital Name"
-        />
-      </div>
-
-      <div className="md:basis-1/2">
-        {/* Health plan select */}
+      <div className="w-full">
         <div
           className="rounded-md flex items-center justify-between space-x-4 border-2 border-gray-400 p-3 mb-2 w-full"
           onClick={() => {
             setShowDropdown(!showDropdown);
           }}
         >
-          <div className="text-gray-500 cursor-pointer">
+          <div className="text-gray-500 cursor-pointer text-xs">
             {selected.length > 0
-              ? `${selected.length} plan${
+              ? `${selected.length} ${type === 'plan'?'Plan': 'State'}${
                   selected.length > 1 ? "s" : ""
                 } selected`
-              : "Select Health Plan"}
+              : type === 'plan' ?"Select Health Plan": "Select Location"}
           </div>
           {!showDropdown ? (
             <BsChevronDown className="cursor-pointer" />
@@ -145,13 +149,14 @@ function MultiSelectDropdown({
             {/* Health Plan Items */}
             <ul className="border-2 border-blue-800 rounded-md shadow-2xl p-2">
               {typeof options[0] === "object" &&
-                dropdownOptions.map(({ id, name }: optionsProps) => {
-                  const isSelected = selected.includes(name);
+                dropdownOptions.map(({ id, name, state }: optionsProps) => {
+                  const isSelected = type==='plan'? selected.includes(name): selected.includes(state);
+                  
                   return (
                     <li
                       key={id}
                       className="px-3 py-2"
-                      onClick={() => onChange(name)}
+                      onClick={() => type==='plan' ? onChange(name): onChange(state)}
                     >
                       <input
                         type="checkbox"
@@ -160,7 +165,8 @@ function MultiSelectDropdown({
                         className="rounded-md border-sky-800 w-4 h-4"
                       ></input>
                       <span className="pl-2 font-medium">
-                        {toTitleCase(name)}
+                        {/* {toTitleCase()} */}
+                        {name || state}
                       </span>
                     </li>
                   );

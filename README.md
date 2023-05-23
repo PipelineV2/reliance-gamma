@@ -40,9 +40,12 @@ yarn install
 yarn start
 ```
 
+## Team
+- [Olukorede Oduwole](https://pipeline.talentql.com/) - Product Manager
+- [Michael Okoye](https://pipeline.talentql.com/) - Product Designer
+- [Kosisochukwu Brilliance Oparaku](https://pipeline.talentql.com/) - Developer
+- [Daniel Olagunju](https://github.com/todak2000) - Developer
 
 ## Acknowledgement
-[Charles Odili](https://github.com/chalu)
-[AltSchool TalentQL Pipeline Team](https://pipeline.talentql.com/)
-[Olukorede Oduwole] - Product Manager
-[Michael Okoye] - Product Designer
+- [Charles Odili](https://github.com/chalu)
+- [AltSchool TalentQL Pipeline Team](https://pipeline.talentql.com/)

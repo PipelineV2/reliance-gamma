@@ -1,29 +1,6 @@
 import React from "react";
+import { HospitalListProps, GroupedData } from "src/utils/types";
 
-interface Hospital {
-  id: number;
-  name: string;
-  location: string | null;
-  address: string;
-  tier_id: number;
-  type_id: number;
-  state: {
-    id: number;
-    name: string;
-  };
-  products: {
-    id: number;
-    name: string;
-  }[];
-}
-
-interface GroupedData {
-  [stateName: string]: Hospital[];
-}
-
-interface HospitalListProps {
-  data: Hospital[];
-}
 
 const HospitalList: React.FC<HospitalListProps> = ({ data }) => {
   // Group the data by state names
@@ -43,21 +20,23 @@ const HospitalList: React.FC<HospitalListProps> = ({ data }) => {
       {Object.entries(groupedData).map(([stateName, hospitals]) => (
         <div key={stateName}>
           <h2 className="text-xl font-bold text-sky-700 uppercase py-2 border-b border-gray-300">
-            {stateName}
+            {stateName} 
           </h2>
 
           <ul>
-            {hospitals.map((hospital) => (
+            {hospitals.map(({id, name, address, products}) => (
               <div
-                key={hospital.id}
-                className="grid grid-cols-12 gap-6 items-center py-4"
+                key={id}
+                className="grid md:grid-cols-12  grid-cols-1 gap-6 items-center py-4"
               >
                 <div className="col-span-6 flex flex-col space-y-2">
-                  <h3 className="font-bold">{hospital.name}</h3>
-                  <p className="font-normal ">{hospital.address}</p>
+                  <h3 className="font-bold">{name}</h3>
+                  <p className="font-normal ">{address}</p>
                 </div>
                 <div className="col-span-6">
-                  <p className="">Red Beryl Plan</p>
+                  {products.map(({id, name})=>{
+                    return <span key={id} className="text-xs bg-gray-200 py-1 px-3 m-1 rounded-full">{name}</span>
+                  })}
                 </div>
               </div>
             ))}

@@ -11,18 +11,14 @@ import { filterByStateAndProduct } from "../utils";
 import Search from "components/organisms/search";
 import { MdOutlineManageSearch } from "react-icons/md";
 import HospitalList from "../components/organisms/hospitalList";
-interface Hospital {
-  name: string;
-  address: string;
-  products: string[];
-}
+import { Hospital } from "src/utils/types";
 const App = (): JSX.Element => {
   const [selected, setSelected] = useState<string[]>([]);
   const [products, setProducts] = useState<ProductsProp[]>([]);
   const [providers, setProviders] = useState<ProvidersProp[]>([]);
   const [error, setError] = useState<string>("");
   const [searchState, setSearchState] = useState<string[]>([]);
-  const [result, setResult] = useState<object[]>([]);
+  const [result, setResult] = useState<Hospital[]>([]);
   const states = useStatesApi();
 
   useEffect(() => {
@@ -89,8 +85,8 @@ const App = (): JSX.Element => {
         <Nav />
 
         <Header />
-        <div className="grid md:grid-cols-3 grid-cols-1 gap-3 md:px-20">
-          <Search />
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-3 md:px-[20%]">
+          {/* <Search /> */}
           <MultiSelectDropdown
             selectClassName="w-full"
             options={products}

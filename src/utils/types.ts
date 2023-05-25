@@ -40,3 +40,24 @@ type PriceProp = {
 }
 
 
+export interface Hospital {
+    id: number;
+    name: string;
+    location: string | null;
+    address: string;
+    tier_id: number;
+    type_id: number;
+    state: StateProp;
+    products: {
+      id: number;
+      name: string;
+    }[];
+  }
+  
+export interface GroupedData {
+    [stateName: string]: Hospital[];
+  }
+  
+export interface HospitalListProps {
+    data: Hospital[];
+  }

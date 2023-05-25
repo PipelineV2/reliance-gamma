@@ -95,7 +95,7 @@ function MultiSelectDropdown({
     <div className={`${selectClassName} flex items-start space-x-6`}>
       <div className="w-full">
         <div
-          className="rounded-md flex items-center justify-between space-x-4 border-2 border-gray-400 p-3 mb-2 w-full"
+          className="rounded-md flex items-center justify-between space-x-4 border-[0.5px] border-gray-400 p-3 mb-2 w-full"
           onClick={() => {
             setShowDropdown(!showDropdown);
           }}
@@ -110,9 +110,9 @@ function MultiSelectDropdown({
               : "Select Location"}
           </div>
           {!showDropdown ? (
-            <BsChevronDown className="cursor-pointer" />
+            <BsChevronDown className="cursor-pointer text-xs" />
           ) : (
-            <BsChevronUp className="cursor-pointer" />
+            <BsChevronUp className="cursor-pointer text-xs" />
           )}
         </div>
         {/* Selected Items */}
@@ -139,7 +139,7 @@ function MultiSelectDropdown({
         {showDropdown && (
           <>
             {/* Search Input */}
-            <div className="rounded-md flex items-center border-2 border-gray-400 py-0.5 px-2 my-2">
+            <div className="rounded-md flex items-center border-[0.5px] border-gray-400 py-0.5 px-2 my-2">
               <SearchIcon color="text-gray-500" width="4" height="4" />
               <input
                 type="text"
@@ -151,7 +151,7 @@ function MultiSelectDropdown({
               />
             </div>
             {/* Health Plan Dropdown Items */}
-            <ul className="border-2 border-blue-800 rounded-md shadow-2xl p-2 h-36 overflow-auto">
+            <ul className="border-[1px] border-blue-800 rounded-md shadow-2xl p-2 h-36 overflow-auto">
               {typeof options[0] === "object" &&
                 dropdownOptions.map(({ id, name, state }: optionsProps) => {
                   const isSelected =

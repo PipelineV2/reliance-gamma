@@ -9,8 +9,13 @@ import { responseSuccessStatus } from "../constants";
 import { useStatesApi } from "@todak2000/nigeria-state-lga-react-component";
 import { filterByStateAndProduct } from "../utils";
 import Search from "components/organisms/search";
-import { MdOutlineManageSearch } from 'react-icons/md'
-
+import { MdOutlineManageSearch } from "react-icons/md";
+import HospitalList from "../components/organisms/hospitalList";
+interface Hospital {
+  name: string;
+  address: string;
+  products: string[];
+}
 const App = (): JSX.Element => {
   const [selected, setSelected] = useState<string[]>([]);
   const [products, setProducts] = useState<ProductsProp[]>([]);
@@ -19,6 +24,7 @@ const App = (): JSX.Element => {
   const [searchState, setSearchState] = useState<string[]>([]);
   const [result, setResult] = useState<object[]>([]);
   const states = useStatesApi();
+
   useEffect(() => {
     fetchProvidersData().then((res) => {
       if (res.status === responseSuccessStatus) {
@@ -43,9 +49,9 @@ const App = (): JSX.Element => {
       selected,
       searchState
     );
-    setResult(x)
+    setResult(x);
     console.log(x, "result");
-  }, [selected,  searchState]);
+  }, [selected, searchState]);
 
   const onChange = (item: string) => {
     setSelected((prevSelected) => {
@@ -76,48 +82,51 @@ const App = (): JSX.Element => {
       }
     });
   };
+
   return (
     <>
-    <main className={styles.main}>
-      <Nav />
+      <main className={styles.main}>
+        <Nav />
 
-      <Header />
-      <div className="grid md:grid-cols-3  grid-cols-1 gap-3 md:px-20 ">
-        <Search />
-        <MultiSelectDropdown
-          selectClassName="w-full"
-          options={products}
-          selected={selected}
-          onChange={onChange}
-          type="plan"
-        />
-        <MultiSelectDropdown
-          selectClassName="w-full"
-          options={states}
-          selected={searchState}
-          onChange={onChangeStates}
-          type="state"
-        />
-      </div>
-      
-      {result.length > 0 && error ==='' ? 
-      <p>hi</p> //todo remove this p tag and pass your result component here 
-    :
-    <>
-    <div className="flex flex-col items-center justify-center md:px-20">
-      <MdOutlineManageSearch className="text-4xl text-red-400 my-4"/>
-      <p className="text-sm text-red-400">{error ? error: "Sorry! there is no result for your search"}</p>
-      </div>
-    </>
-    }
-      
-      
-    </main>
-    <footer className="text-sm text-gray-600 text-center flex flex-row justify-center w-full absolute bottom-4">
-    <a href="https://github.com/PipelineV2/reliance-gamma">
-      TalentQL Pipeline Team Gamma @ {new Date().getFullYear()}
-    </a>
-  </footer>
+        <Header />
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-3 md:px-20">
+          <Search />
+          <MultiSelectDropdown
+            selectClassName="w-full"
+            options={products}
+            selected={selected}
+            onChange={onChange}
+            type="plan"
+          />
+          <MultiSelectDropdown
+            selectClassName="w-full"
+            options={states}
+            selected={searchState}
+            onChange={onChangeStates}
+            type="state"
+          />
+        </div>
+
+        {}
+
+        {result.length > 0 && error === "" ? (
+          <HospitalList data={result} />
+        ) : (
+          <>
+            <div className="flex flex-col items-center justify-center md:px-20">
+              <MdOutlineManageSearch className="text-4xl text-red-400 my-4" />
+              <p className="text-sm text-red-400">
+                {error ? error : "Sorry! there is no result for your search"}
+              </p>
+            </div>
+          </>
+        )}
+      </main>
+      <footer className="text-sm text-gray-600 text-center flex flex-row justify-center w-full my-4">
+        <a href="https://github.com/PipelineV2/reliance-gamma">
+          TalentQL Pipeline Team Gamma @ {new Date().getFullYear()}
+        </a>
+      </footer>
     </>
   );
 };

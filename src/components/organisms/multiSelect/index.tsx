@@ -32,7 +32,7 @@ type optionsProps = {
   name?: string;
   state?: string;
   slogan?: string;
-  lga?: string[]
+  lga?: string[];
 };
 
 function MultiSelectDropdown({
@@ -60,13 +60,15 @@ function MultiSelectDropdown({
   const [dropdownOptions, setDropdownOptions] = useState<optionsProps[]>([]);
   useEffect(() => {
     if (searchQuery !== "" && typeof options[0] === "object") {
-      
       setDropdownOptions(
-        
-        options?.filter(({ id, name, state }: optionsProps) =>
-        name?.toLocaleLowerCase()?.includes(searchQuery?.toLocaleLowerCase()) ||
-        state?.toLocaleLowerCase()?.includes(searchQuery?.toLocaleLowerCase())
-          
+        options?.filter(
+          ({ id, name, state }: optionsProps) =>
+            name
+              ?.toLocaleLowerCase()
+              ?.includes(searchQuery?.toLocaleLowerCase()) ||
+            state
+              ?.toLocaleLowerCase()
+              ?.includes(searchQuery?.toLocaleLowerCase())
         )
       );
     } else if (searchQuery !== "" && typeof options[0] === "string") {
@@ -85,10 +87,10 @@ function MultiSelectDropdown({
   }, [options, showDropdown]);
 
   useEffect(() => {
-    console.log(selected)
-  }, [selected])
-  
-// console.log(dropdownOptions)
+    console.log(selected);
+  }, [selected]);
+
+  // console.log(dropdownOptions)
   return (
     <div className={`${selectClassName} flex items-start space-x-6`}>
       <div className="w-full">
@@ -100,10 +102,12 @@ function MultiSelectDropdown({
         >
           <div className="text-gray-500 cursor-pointer text-xs">
             {selected.length > 0
-              ? `${selected.length} ${type === 'plan'?'Plan': 'State'}${
+              ? `${selected.length} ${type === "plan" ? "Plan" : "State"}${
                   selected.length > 1 ? "s" : ""
                 } selected`
-              : type === 'plan' ?"Select Health Plan": "Select Location"}
+              : type === "plan"
+              ? "Select Health Plan"
+              : "Select Location"}
           </div>
           {!showDropdown ? (
             <BsChevronDown className="cursor-pointer" />
@@ -146,17 +150,22 @@ function MultiSelectDropdown({
                 }}
               />
             </div>
-            {/* Health Plan Items */}
-            <ul className="border-2 border-blue-800 rounded-md shadow-2xl p-2">
+            {/* Health Plan Dropdown Items */}
+            <ul className="border-2 border-blue-800 rounded-md shadow-2xl p-2 h-36 overflow-auto">
               {typeof options[0] === "object" &&
                 dropdownOptions.map(({ id, name, state }: optionsProps) => {
-                  const isSelected = type==='plan'? selected.includes(name): selected.includes(state);
-                  
+                  const isSelected =
+                    type === "plan"
+                      ? selected.includes(name)
+                      : selected.includes(state);
+
                   return (
                     <li
                       key={id}
                       className="px-3 py-2"
-                      onClick={() => type==='plan' ? onChange(name): onChange(state)}
+                      onClick={() =>
+                        type === "plan" ? onChange(name) : onChange(state)
+                      }
                     >
                       <input
                         type="checkbox"

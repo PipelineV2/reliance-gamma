@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { BsChevronDown, BsChevronUp, BsSearch } from "react-icons/bs";
+import React, { useState, useEffect, useRef } from "react";
+import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import "./index.scss";
 import { SlClose } from "react-icons/sl";
-import { SearchIcon, CloseIcon } from "components/atoms/icons";
+import { SearchIcon } from "components/atoms/icons";
 import { toTitleCase } from "../../../utils/";
+import { useMouseOutClose } from "../../../utils/hooks";
 
 type multiProps = {
   options: any;
   selected: any;
   type: string;
-  onChange: (state: any) => void;
+  onChange: (state: any, type: string) => void;
   selectClassName?: string;
   selectStyle?: object;
   dropdownClassName?: string;
@@ -58,6 +59,8 @@ function MultiSelectDropdown({
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [dropdownOptions, setDropdownOptions] = useState<optionsProps[]>([]);
+  const ref = useRef(null);
+  useMouseOutClose(ref, setShowDropdown);
   useEffect(() => {
     if (searchQuery !== "" && typeof options[0] === "object") {
       setDropdownOptions(
@@ -86,11 +89,6 @@ function MultiSelectDropdown({
     setDropdownOptions(options);
   }, [options, showDropdown]);
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
-
-  // console.log(dropdownOptions)
   return (
     <div className={`${selectClassName} flex items-start space-x-6`}>
       <div className="w-full">
@@ -121,14 +119,14 @@ function MultiSelectDropdown({
             return (
               <span
                 key={index}
-                className="flex items-center justify-between space-x-2 rounded-md border border-sky-700 bg-sky-300/20 col-span-2 p-2 font-semibold text-xs"
+                className="flex items-center justify-between space-x-2 rounded-md border-[0.5px] border-sky-700 bg-sky-300/20 col-span-2 p-2 text-[10px]"
               >
-                {state}
+                {toTitleCase(state)}
                 <SlClose
                   onClick={() => {
-                    onChange(state);
+                    onChange(state, type);
                   }}
-                  className="closeItem pl-1 w-10 cursor-pointer"
+                  className="closeItem pl-1 w-4 cursor-pointer"
                 />
               </span>
             );
@@ -137,7 +135,7 @@ function MultiSelectDropdown({
 
         {/* Actual Dropdown */}
         {showDropdown && (
-          <>
+          <div ref={ref}>
             {/* Search Input */}
             <div className="rounded-md flex items-center border-[0.5px] border-gray-400 py-0.5 px-2 my-2">
               <SearchIcon color="text-gray-500" width="4" height="4" />
@@ -164,7 +162,9 @@ function MultiSelectDropdown({
                       key={id}
                       className="px-3 py-2"
                       onClick={() =>
-                        type === "plan" ? onChange(name) : onChange(state)
+                        type === "plan"
+                          ? onChange(name, type)
+                          : onChange(state, type)
                       }
                     >
                       <input
@@ -173,10 +173,7 @@ function MultiSelectDropdown({
                         readOnly
                         className="rounded-md border-sky-800 w-4 h-4"
                       ></input>
-                      <span className="pl-2 font-medium">
-                        {/* {toTitleCase()} */}
-                        {name || state}
-                      </span>
+                      <span className="pl-2 font-medium">{name || state}</span>
                     </li>
                   );
                 })}
@@ -189,7 +186,7 @@ function MultiSelectDropdown({
                       key={index}
                       className={`${optionsClass}`}
                       style={optionsStyle}
-                      onClick={() => onChange(item)}
+                      onClick={() => onChange(item, type)}
                     >
                       <input
                         type="checkbox"
@@ -202,7 +199,7 @@ function MultiSelectDropdown({
                   );
                 })}
             </ul>
-          </>
+          </div>
         )}
       </div>
     </div>

@@ -1,6 +1,18 @@
 # RELIANCE-GAMMA
 
-RelianceHMO's PFES feature makes it easy to filter, export, and share the hospitals across all states that are available under any plan of choice, making it easy to find the right healthcare provider.
+![ezgif com-optimize (1)](https://github.com/PipelineV2/reliance-gamma/assets/26861798/ec266757-16dd-4d81-9c7a-6015835a47c2)
+
+RelianceHMO's PFES feature makes it easy to filter, export, and share the hospitals across all states that are available under any plan of choice, making it easy to find the right healthcare provider. Features include:
+1. Users can search via
+  - Single state search
+  - Single product search
+  - Single state, multiple products search
+  - Multiple states, single product search
+  - Multiple states, multiple product search
+2. Users can copy link with search results and share via Social Media (Twitter and Whatsapp)
+3. Users can get 
+  - direction to hospital via google map (TODO)
+  - know distance from current location to different hospitals (TODO)
 ### Libraries
 
 - [React 18](https://reactjs.org/)

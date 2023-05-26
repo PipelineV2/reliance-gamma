@@ -1,0 +1,17 @@
+@keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .spinnerContainer{
+    @apply h-[20vh] w-full flex flex-col justify-center items-center
+  }
+  
+  .loadingSpinner {
+    width: 50px;
+    height: 50px;
+    animation: spinner 1.5s linear infinite;
+  }
